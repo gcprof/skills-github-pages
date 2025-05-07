@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz sulla Società Comunale</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(120deg, #f0f4f8, #d9e4f5);
+      padding: 40px;
+      margin: 0;
+    }
+    .quiz-container {
+      max-width: 700px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .question {
+      font-size: 1.4em;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .answers {
+      margin-top: 15px;
+    }
+    .answers button {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 14px;
+      font-size: 1em;
+      background: #f0f0f0;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .answers button:hover {
+      background: #e2e6ea;
+      border-color: #b0bec5;
+    }
+    .answers button.correct {
+      background: #c8e6c9;
+      border-color: #66bb6a;
+      font-weight: bold;
+    }
+    .answers button.wrong {
+      background: #ffcdd2;
+      border-color: #ef5350;
+      font-weight: bold;
+    }
+    #next {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      cursor: pointer;
+      display: none;
+      transition: background 0.3s ease;
+    }
+    #next:hover {
+      background: #1565c0;
+    }
+    #result {
+      display: none;
+      margin-top: 30px;
+      padding: 20px;
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+      border-radius: 10px;
+    }
+    #result ul {
+      padding-left: 20px;
+    }
+    #result li {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <div id="question" class="question"></div>
+    <div id="answers" class="answers"></div>
+    <button id="next">Prossima domanda</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const quiz = [{"question": "In che secolo iniziano a svilupparsi i Comuni in Europa?", "options": ["XI secolo", "XII secolo", "XIII secolo", "XIV secolo"], "correct": 2}, {"question": "Quali erano i due poteri universali nel 1200?", "options": ["Monarchia francese e Impero ottomano", "Sacro Romano Impero e Chiesa", "Comuni e Regni", "Papato e Islam"], "correct": 1}, {"question": "Che tipo di potere esercitava il Sacro Romano Impero?", "options": ["Spirituale", "Religioso", "Temporale", "Militare"], "correct": 2}, {"question": "Perché i Comuni si sviluppano soprattutto in Italia del Nord?", "options": ["Presenza dell’esercito", "Fede cristiana", "Condizioni geografiche e commerciali", "Autorità del Papa"], "correct": 2}, {"question": "Da cosa deriva il nome 'Comune'?", "options": ["Dal latino 'communicare'", "Dalla messa in comune di risorse", "Dalla parola 'comunità'", "Da un editto imperiale"], "correct": 1}, {"question": "Chi erano i consoli nei Comuni?", "options": ["Sacerdoti", "Giudici", "Funzionari pubblici eletti", "Capitani di guerra"], "correct": 2}, {"question": "Cosa facevano i consoli nei Comuni?", "options": ["Predicavano", "Organizzavano fiere", "Amministravano giustizia, tasse e difesa", "Scrivevano leggi religiose"], "correct": 2}, {"question": "Il potere dei Comuni era riconosciuto da Impero e Chiesa?", "options": ["Sì", "Solo dall’Impero", "Solo dalla Chiesa", "No"], "correct": 3}, {"question": "Quale conflitto politico famoso si sviluppò nei Comuni?", "options": ["Aristocratici vs Contadini", "Guelfi vs Ghibellini", "Papa vs Vescovi", "Banchieri vs Artisti"], "correct": 1}, {"question": "Perché i Comuni erano spesso teatro di scontri interni?", "options": ["Prezzi del pane", "Rivalità scolastiche", "Conflitti tra famiglie e classi", "Conflitti religiosi"], "correct": 2}, {"question": "Chi è Ferdinand Braudel?", "options": ["Un giurista", "Un poeta", "Uno storico dell’economia", "Un banchiere veneziano"], "correct": 2}, {"question": "Quanti livelli dell’economia distingue Braudel?", "options": ["2", "3", "4", "5"], "correct": 1}, {"question": "Cos'è l’economia materiale secondo Braudel?", "options": ["Tasse", "Finanza", "Sussistenza e produzione locale", "Scambi internazionali"], "correct": 2}, {"question": "A quale livello appartengono fiere e manifattura?", "options": ["Materiale", "Mercato", "Capitalismo", "Industriale"], "correct": 1}, {"question": "Quale città era famosa per le attività bancarie?", "options": ["Roma", "Genova", "Parigi", "Firenze"], "correct": 3}, {"question": "Chi possedeva torri e palazzi nel centro?", "options": ["Artigiani", "Popolo minuto", "Aristocrazia cittadina", "Universitari"], "correct": 2}, {"question": "Chi contribuì allo sviluppo dei mercati internazionali?", "options": ["Contadini", "Frati", "Mercanti e banchieri", "Preti"], "correct": 2}, {"question": "Chi garantiva la qualità dei prodotti artigianali?", "options": ["Università", "Frati", "Corporazioni", "Giudici"], "correct": 2}, {"question": "Chi era escluso dal governo cittadino?", "options": ["Banchieri", "Popolo minuto", "Aristocratici", "Artigiani"], "correct": 1}, {"question": "Chi iniziò le prime lotte per i diritti?", "options": ["Aristocrazia", "Banchieri", "Giuristi", "Popolo minuto"], "correct": 3}, {"question": "Quale istituzione educativa nasce nei Comuni?", "options": ["Accademia", "Liceo", "Università", "Ginnasio"], "correct": 2}, {"question": "Perché nascono le università nei Comuni?", "options": ["Per insegnare religione", "Per l’intrattenimento", "Per formare professionisti", "Per tradurre testi"], "correct": 2}, {"question": "Cos'è il volgare?", "options": ["Lingua ufficiale", "Latino medievale", "Lingua del popolo", "Comportamento scorretto"], "correct": 2}, {"question": "Chi usò il volgare per scrivere grandi opere?", "options": ["Galileo", "Cesare", "Dante e Boccaccio", "Virgilio"], "correct": 2}, {"question": "Cosa rappresentava l’architettura comunale?", "options": ["Arte classica", "Religione", "Ricchezza e autonomia", "Potere imperiale"], "correct": 2}, {"question": "Cosa rende dinamica la cultura comunale?", "options": ["Fiere", "Contrasto tra potere simbolico ed economico", "Fede religiosa", "Unione tra Chiesa e Impero"], "correct": 1}, {"question": "Secondo Dante, cosa può rendere nobile un uomo?", "options": ["Educazione", "Denaro", "Amore spirituale", "Potere politico"], "correct": 2}, {"question": "Quale opera di Dante parla di amore e salvezza?", "options": ["Il Convivio", "Vita Nova", "La Divina Commedia", "De Monarchia"], "correct": 2}, {"question": "Perché il pensiero di Dante era rivoluzionario?", "options": ["Scriveva in latino", "Amava Beatrice", "Negava la nobiltà ereditaria", "Odiava il Papa"], "correct": 2}, {"question": "Cosa significa dire che 'la nobiltà viene da dentro'?", "options": ["Si nasce nobili", "La Chiesa decide", "Si può essere nobili nell’animo", "Solo Dio decide"], "correct": 2}];
+
+    let current = 0;
+    let score = 0;
+    const questionEl = document.getElementById('question');
+    const answersEl = document.getElementById('answers');
+    const nextBtn = document.getElementById('next');
+    const resultEl = document.getElementById('result');
+
+    function showQuestion() {
+      const q = quiz[current];
+      questionEl.textContent = q.question;
+      answersEl.innerHTML = '';
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.textContent = opt;
+        btn.addEventListener('click', () => checkAnswer(btn, i === q.correct));
+        answersEl.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(button, isCorrect) {
+      Array.from(answersEl.children).forEach(btn => {
+        btn.disabled = true;
+        if (quiz[current].options.indexOf(btn.textContent) === quiz[current].correct) {
+          btn.classList.add('correct');
+        } else {
+          btn.classList.add('wrong');
+        }
+      });
+      if (isCorrect) score++;
+      nextBtn.style.display = 'inline-block';
+    }
+
+    nextBtn.addEventListener('click', () => {
+      current++;
+      if (current < quiz.length) {
+        showQuestion();
+        nextBtn.style.display = 'none';
+      } else {
+        showResult();
+      }
+    });
+
+    function showResult() {
+      questionEl.textContent = "Hai completato il quiz!";
+      answersEl.innerHTML = '';
+      nextBtn.style.display = 'none';
+      resultEl.style.display = 'block';
+      let html = '<h3>Risultato finale: ' + score + ' su ' + quiz.length + '</h3>';
+      html += '<ul>';
+      quiz.forEach((q, i) => {
+        html += '<li><strong>Domanda ' + (i + 1) + ':</strong> ' + q.question + '<br><em>Risposta corretta:</em> ' + q.options[q.correct] + '</li>';
+      });
+      html += '</ul>';
+      resultEl.innerHTML = html;
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
